@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Xgj-mi-fyr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Xgj-mi-fyr">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -38,27 +38,37 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Save">
-                                    <backgroundConfiguration key="background" cornerRadius="3">
-                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
-                                    </backgroundConfiguration>
+                                    <fontDescription key="titleFontDescription" type="italicSystem" pointSize="21"/>
+                                    <attributedString key="attributedSubtitle"/>
                                     <color key="baseForegroundColor" systemColor="tintColor"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="btnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VmV-7T-8HB"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lXD-R9-kPd">
+                                <rect key="frame" x="74" y="561" width="238" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBrownColor"/>
                         <color key="tintColor" systemColor="systemGray6Color"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="lXD-R9-kPd" secondAttribute="bottom" constant="236" id="4MV-pz-u3C"/>
                             <constraint firstItem="tk7-c5-wsy" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="6hL-HK-aWv"/>
                             <constraint firstItem="aeg-2V-706" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="62" id="8Cp-2G-Et7"/>
+                            <constraint firstItem="lXD-R9-kPd" firstAttribute="top" secondItem="tk7-c5-wsy" secondAttribute="bottom" constant="28" id="9Ok-sh-463"/>
                             <constraint firstItem="eDg-6X-Gz5" firstAttribute="trailing" secondItem="aeg-2V-706" secondAttribute="trailing" id="GeZ-gQ-lVv"/>
                             <constraint firstItem="eDg-6X-Gz5" firstAttribute="top" secondItem="aeg-2V-706" secondAttribute="bottom" constant="51" id="N6h-B3-pVj"/>
                             <constraint firstItem="tk7-c5-wsy" firstAttribute="top" secondItem="eDg-6X-Gz5" secondAttribute="bottom" constant="60" id="VwA-ik-U36"/>
                             <constraint firstItem="aeg-2V-706" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="211" id="ckt-mT-GQw"/>
+                            <constraint firstItem="lXD-R9-kPd" firstAttribute="width" secondItem="eDg-6X-Gz5" secondAttribute="width" multiplier="0.908397" id="eHS-FT-vlp"/>
+                            <constraint firstItem="lXD-R9-kPd" firstAttribute="height" secondItem="eDg-6X-Gz5" secondAttribute="height" multiplier="0.617647" id="oio-3Z-75a"/>
                             <constraint firstItem="eDg-6X-Gz5" firstAttribute="leading" secondItem="aeg-2V-706" secondAttribute="leading" id="q7E-FS-hhJ"/>
+                            <constraint firstItem="lXD-R9-kPd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="74" id="tuX-mx-jNs"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="lY1-lH-NsD"/>
@@ -66,6 +76,7 @@
                         <outlet property="btn" destination="tk7-c5-wsy" id="X4d-TB-Z6Y"/>
                         <outlet property="emailTxt" destination="aeg-2V-706" id="k5h-lw-BMp"/>
                         <outlet property="passTxt" destination="eDg-6X-Gz5" id="Btr-go-3T5"/>
+                        <outlet property="warningTxt" destination="lXD-R9-kPd" id="GvG-z9-vpk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -159,8 +170,8 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemBrownColor">
+            <color red="0.63529411764705879" green="0.51764705882352946" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -9,14 +9,13 @@ import UIKit
 
 class MyTableViewCell: UITableViewCell {
 
-    static let reuseIdentifier = "cell"
+    //static let reuseIdentifier = "MyTableViewCell"
     
-    @IBOutlet var studentImg: UIImageView!
     
-    @IBOutlet var aLabel: UILabel!
+    @IBOutlet  var studImg: UIImageView!
     
-    @IBOutlet var nLabel: UILabel!
-    
+    @IBOutlet  var nameLabel: UILabel!
+    @IBOutlet  var ageLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

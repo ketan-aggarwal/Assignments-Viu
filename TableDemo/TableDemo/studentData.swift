@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct StudentData{
+struct studentData{
     var name:String
     var age:Int
     var studentPhoto:String

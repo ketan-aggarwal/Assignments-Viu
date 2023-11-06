@@ -23,8 +23,8 @@ class DataDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        emailLabel.text="Email:\(email)"
-        passLabel.text="Password:\(pass)"
+        emailLabel.text="Email: \(email)"
+        passLabel.text="Password: \(pass)"
     }
     
 
