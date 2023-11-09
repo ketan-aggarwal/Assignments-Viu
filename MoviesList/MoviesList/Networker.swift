@@ -79,7 +79,7 @@ class MovieService {
         }
     }
     
-    static func fetchAdditionalMovieInfo(movieID: Int, apiKey: String, completion: @escaping (MovieInfo?) -> Void) {
+    static func fetchAdditionalMovieInfo(movieID: Int64, apiKey: String, completion: @escaping (MovieInfo?) -> Void) {
         let url = URL(string: "https://api.themoviedb.org/3/movie/\(movieID)?api_key=\(apiKey)&append_to_response=videos")!
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -108,7 +108,7 @@ class MovieService {
         task.resume()
     }
     
-    static func fetchMovieTrailers(movieID: Int, apiKey:String , completion: @escaping ([MovieTrailer]?) -> Void){
+    static func fetchMovieTrailers(movieID: Int64, apiKey:String , completion: @escaping ([MovieTrailer]?) -> Void){
         let url = URL(string: "https://api.themoviedb.org/3/movie/\(movieID)/videos?api_key=\(apiKey)")!
         let task = URLSession.shared.dataTask(with: url)  { (data,response,error) in
             if let error = error{

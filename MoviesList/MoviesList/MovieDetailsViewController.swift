@@ -16,6 +16,7 @@ class MovieDetailsViewController: UIViewController, YTPlayerViewDelegate {
     var trailers: [MovieTrailer] = []
     var additionalInfo: MovieInfo?
     var playerView:YTPlayerView!
+    var isLiked = false
     
     @IBOutlet weak var FullTitle: UILabel!
     @IBOutlet weak var revLabel: UILabel!
@@ -25,6 +26,23 @@ class MovieDetailsViewController: UIViewController, YTPlayerViewDelegate {
     @IBOutlet weak var countryLabel: UILabel!
     @IBOutlet weak var langLabel: UILabel!
     @IBOutlet weak var likeBtn: UIButton!
+    @IBOutlet weak var img: UIImageView!
+    
+    @IBAction func likedBtn(_ sender: Any) {
+        isLiked.toggle()
+        updateLikeButtonAppearance()
+    }
+    
+    func updateLikeButtonAppearance() {
+        if isLiked {
+            img.image = UIImage(named: "heart_filled")
+            likeBtn.tintColor = .clear
+            
+        } else {
+            img.image = UIImage(named: "heart_empty")
+            likeBtn.tintColor = .clear
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +63,7 @@ class MovieDetailsViewController: UIViewController, YTPlayerViewDelegate {
         
         fetchTrailerData()
         fetchInfo()
+        updateLikeButtonAppearance()
         
         if let movie = movie{
             FullTitle.text = movie.title
@@ -86,6 +105,7 @@ class MovieDetailsViewController: UIViewController, YTPlayerViewDelegate {
                     DispatchQueue.main.async {
                         self?.revLabel.text = "Revenue data not available"
                         self?.runLabel.text = "Runtime not available"
+                        self?.countryLabel.text = "India"
                     }
                 }
             }

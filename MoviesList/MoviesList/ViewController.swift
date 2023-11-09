@@ -7,7 +7,8 @@
 
 import UIKit
 import SDWebImage
-import AVKit
+import CoreData
+
 
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     @IBOutlet weak var myTable: UITableView!
@@ -17,8 +18,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var movieInfoArray: [MovieInfo?] = []
     var movie: Movie?
     var currentPage = 1
-    
     let button = UIButton()
+    let coreDataStack = CoreDataStack.shared
+    
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,44 +54,117 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         myTable.delegate = self
     }
     
+//    func fetchMoviesForCurrentPage() {
+//        let apiKey = "e3d053e3f62984a4fa5d23b83eea3ce6"
+//        MovieService.fetchMovies(apiKey: apiKey, page: currentPage) { [weak self] movies in
+//            guard let self = self else { return }
+//            if let movies = movies {
+//
+//                DispatchQueue.main.async {
+//                    self.movies += movies
+//                    self.myTable.reloadData()
+//                }
+//            } else {
+//                DispatchQueue.main.async {
+//
+//                }
+//            }
+//        }
+//    }
+//
     func fetchMoviesForCurrentPage() {
         let apiKey = "e3d053e3f62984a4fa5d23b83eea3ce6"
         MovieService.fetchMovies(apiKey: apiKey, page: currentPage) { [weak self] movies in
             guard let self = self else { return }
             if let movies = movies {
-                
-                DispatchQueue.main.async {
-                    self.movies += movies
-                    self.myTable.reloadData()
-                }
-            } else {
-                DispatchQueue.main.async {
-                    
+                DispatchQueue.global().async {
+                    let backgroundContext = self.coreDataStack.persistentContainer.newBackgroundContext()
+                    backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+
+                    backgroundContext.perform {
+                        for movie in movies {
+                            let movieEntity = MovieEntity(context: backgroundContext)
+                            movieEntity.id = movie.id!
+                            movieEntity.title = movie.title
+                            movieEntity.overview = movie.overview
+                            movieEntity.vote_average = movie.vote_average ?? 0.0
+                            movieEntity.imageURL = movie.poster_path
+                            
+//
+                        }
+
+                        }
+
+                        do {
+                            try backgroundContext.save()
+                            // Fetch the saved movies on the main context
+                            self.coreDataStack.managedObjectContext.perform {
+                                self.myTable.reloadData()
+                            }
+                        } catch {
+                            print("Error saving movie data to Core Data: \(error)")
+                        }
+                    }
                 }
             }
         }
-    }
+    
+
     
     func fetchMovieData() {
-        let apiKey = "e3d053e3f62984a4fa5d23b83eea3ce6"
-        MovieService.fetchMovies(apiKey: apiKey,page: currentPage) { [weak self] movies in
-            guard let self = self else { return }
-            
-            if let movies = movies {
-                self.movies = movies
-                
+        let context = coreDataStack.managedObjectContext
+        let fetchRequest: NSFetchRequest<MovieEntity> = MovieEntity.fetchRequest()
+
+        do {
+            let movies = try context.fetch(fetchRequest)
+            if !movies.isEmpty {
+                self.movies = movies.map { movieEntity in
+                    return Movie(
+                        title: movieEntity.title,
+                        overview: movieEntity.overview,
+                        vote_average: movieEntity.vote_average,
+                        poster_path: movieEntity.imageURL,
+                        page: nil,
+                        id: movieEntity.id
+                    )
+                }
+
                 DispatchQueue.main.async {
                     self.myTable.reloadData()
-                    //self.movie = self.movies[0]
-                    //self.fetchInfo()
                 }
             } else {
-                DispatchQueue.main.async {
-                }
+                fetchMoviesForCurrentPage()
             }
+        } catch {
+            print("Error fetching movie data from Core Data: \(error)")
+            fetchMoviesForCurrentPage() // Handle the error by fetching from the API
         }
-        
     }
+
+    
+    
+    
+//    func fetchMovieData() {
+//        let apiKey = "e3d053e3f62984a4fa5d23b83eea3ce6"
+//        MovieService.fetchMovies(apiKey: apiKey,page: currentPage) { [weak self] movies in
+//            guard let self = self else { return }
+//
+//            if let movies = movies {
+//                self.movies = movies
+//
+//                DispatchQueue.main.async {
+//                    self.myTable.reloadData()
+                  
+//                }
+//            } else {
+//                DispatchQueue.main.async {
+//                }
+//            }
+//        }
+//
+//    }
+
+   
 
     func fectchConfig(){
         
@@ -124,12 +201,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         
         if let configuration = configuration, let posterPath = movie.poster_path {
-            
-            if let fullPosterURL = URL(string: configuration.base_url)?
-                .appendingPathComponent(configuration.poster_sizes[5])
-                .appendingPathComponent(posterPath) {
-                cell.img.sd_setImage(with: fullPosterURL, placeholderImage: UIImage(named: "placeholderImage"))
+            DispatchQueue.main.async {
+                if let fullPosterURL = URL(string: configuration.base_url)?
+                    .appendingPathComponent(configuration.poster_sizes[5])
+                    .appendingPathComponent(posterPath) {
+                    cell.img.sd_setImage(with: fullPosterURL, placeholderImage: UIImage(named: "placeholderImage"))
+                }
             }
+         
         }
         return cell
     }

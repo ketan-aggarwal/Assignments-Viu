@@ -18,7 +18,7 @@ struct Movie: Codable {
     let vote_average: Double?
     let poster_path: String?
     let page: String?
-    let id : Int?
+    let id : Int64?
     
 }
 
